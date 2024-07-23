@@ -1,7 +1,7 @@
-# ArcadeAI
+# Vista
 
 ## Overview
-ArcadeAI is a video game recommendation system that leverages game data from the RAWG API and user interaction data to provide personalized game suggestions. The system uses Flask for the backend and MongoDB for data storage, incorporating machine learning models to enhance recommendation accuracy.
+Vista is a tv-show recommendation system that leverages game data from the TVmaze API and user interaction data to provide personalized tv-show suggestions. The system uses Flask for the backend and MongoDB for data storage, incorporating machine learning models to enhance recommendation accuracy.
 
 ## Installation
 To set up the ArcadeAI project, follow these steps:
