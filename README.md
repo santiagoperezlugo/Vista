@@ -37,31 +37,3 @@ To set up the ArcadeAI project, follow these steps:
 └── run.py                      # Entry point for the Flask application
 ```
 
-
-## SQL SETUP
-
-```bash
-
-├── USER               
-│   ├── userID    
-│   ├── Username   
-│   ├── Password 
-
-├── Games                      
-│   ├── gameID            
-│   ├── title              
-│   ├── genre            
-│   ├── description             
-│   ├── publisher
-│   ├── release_date
-
-├── UserGamesPlayed                     
-│   ├── userID            
-│   ├── gameID          
-│   ├── playtime            
-│   ├── rating      
-│   ├── review
-```
-
-245 tv shows per page
-start on page 137 for more movies

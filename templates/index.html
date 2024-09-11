@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <title>Vista</title>
+</head>
+<body>
+    <div id="container">
+        <h1>Enter a Show You Like, and get Reccomendations!</h1>
+        <form id="searchForm">
+            <label for="showInput">Enter a TV Show Name:</label>
+            <input type="text" id="showInput" name="showInput" required>
+            <button type="submit">Get Recommendations</button>
+            <button type="button" id="clearButton">Clear All</button>
+        </form>
+
+        <div id="recommendationSection">
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const showName = document.getElementById('showInput').value;
+            fetch(`/recommendations?showName=${encodeURIComponent(showName)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const recommendationSection = document.getElementById('recommendationSection');
+                    recommendationSection.innerHTML = ''; 
+                    if (data && data.length > 0) {
+                        data.forEach(show => {
+                            const showDiv = document.createElement('div');
+                            showDiv.className = 'show';
+                            showDiv.innerHTML = `
+                                <h3>${show.name} (Rating: ${parseFloat(show.rating).toFixed(2)})</h3>
+                                <p>Recommendation Score: ${parseFloat(show.recommendation_score).toFixed(2)}</p>
+                                <p><a href="${show.url}" target="_blank">More Info</a></p>
+                                <img src="${show.image_url}" alt="${show.name}">
+                            `;
+                            recommendationSection.appendChild(showDiv);
+                        });
+                    } else {
+                        recommendationSection.innerHTML = '<p>No recommendations found</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching recommendations:', error);
+                    recommendationSection.innerHTML = '<p>Error loading recommendations</p>';
+                });
+        });
+    
+        document.getElementById('clearButton').addEventListener('click', function() {
+            document.getElementById('recommendationSection').innerHTML = '';
+            document.getElementById('showInput').value = '';
+        });
+    </script>
+    
+</body>
+</html>

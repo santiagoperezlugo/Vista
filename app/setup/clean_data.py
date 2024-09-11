@@ -1,14 +1,14 @@
 from pymongo import MongoClient
 import sys
-sys.path.append('/Users/santi/Documents/Vista')  # Append the root of your project
+sys.path.append('/Users/santi/Documents/Vista') 
 from app.utils.analysis.connect import connect_to_db
 
 def extract_decade(date):
     """ Extracts the decade from a date string. """
     if date:
         year = int(date[0:4])
-        return f"{(year // 10) * 10}s"  # Formats as '1990s'
-    return None  # Handle cases where date might be None or malformed
+        return f"{(year // 10) * 10}s"  
+    return None 
 
 def update_premiere_to_decade(collection):
     """ Updates 'premiered' field to store only the decade. """

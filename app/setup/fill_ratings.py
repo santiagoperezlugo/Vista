@@ -2,7 +2,7 @@ import requests
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 import sys
-sys.path.append('/Users/santi/Documents/Vista')  # Ensure your project root is correctly referenced
+sys.path.append('/Users/santi/Documents/Vista')
 from app.utils.analysis.connect import connect_to_db
 from dotenv import load_dotenv
 import os
@@ -14,7 +14,7 @@ def fetch_tmdb_rating(title, api_key):
     search_response.raise_for_status()
     search_data = search_response.json()
     if search_data['results']:
-        tv_id = search_data['results'][0]['id']  # Assuming the first result is the correct show
+        tv_id = search_data['results'][0]['id'] 
         details_url = f"https://api.themoviedb.org/3/tv/{tv_id}?api_key={api_key}"
         details_response = requests.get(details_url)
         details_response.raise_for_status()
@@ -41,16 +41,16 @@ def update_ratings(collection, api_key):
 
     for document in cursor:
         if start_updating or document['name'] == last_processed:
-            start_updating = True  # Start updating from the last processed document
+            start_updating = True 
             try:
                 new_rating = fetch_tmdb_rating(document['name'], api_key)
                 if new_rating != 'N/A':
                     collection.update_one({'_id': document['_id']}, {'$set': {'rating': new_rating}})
                     print(f"Updated rating for {document['name']} to {new_rating}")
-                    save_last_processed(document['name'])  # Save after each successful update
+                    save_last_processed(document['name']) 
             except requests.exceptions.RequestException as e:
                 print(f"Failed to update {document['name']} due to API error: {e}")
-                break  # Stop processing on error to avoid skipping entries
+                break 
 
 def main():
     load_dotenv()

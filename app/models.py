@@ -60,12 +60,15 @@ def build_similarity_matrix(processed_df):
     similarity_matrix = cosine_similarity(processed_df)
     return pd.DataFrame(similarity_matrix, index=processed_df.index, columns=processed_df.index)
 
-# Function to get recommendations based on cosine similarity
-def get_recommendations(show_id, similarity_df, shows_df, top_n=5):
+# Function to get recommendations based on cosine similarity and include recommendation scores, adjust top_n to get more recommendations
+def get_recommendations(show_id, similarity_df, shows_df, top_n=15):
     sim_scores = similarity_df.loc[show_id]
     top_indices = sim_scores.sort_values(ascending=False).index[1:top_n+1]
     recommended_shows = shows_df.loc[shows_df.index.isin(top_indices)]
-    return recommended_shows[['name', 'url', 'rating']]
+    # Include the similarity scores in the output
+    recommended_shows['recommendation_score'] = sim_scores[top_indices].values
+    return recommended_shows[['name', 'url', 'rating', 'recommendation_score']]
+
 
 # Find a show by name and return its _id
 def find_show_index_by_name(show_name, shows_df):
