@@ -84,17 +84,19 @@ def find_missing_premiered(collection):
 
 
 
-def main_cleanup():
+def main():
     db = connect_to_db()
     shows_collection = db['shows']
     print("Starting cleanup process...")
-    delete_unknown_values(shows_collection)  # Remove documents with unknown values
+    # delete_unknown_values(shows_collection)  # Remove documents with unknown values
     # find_missing_premiered(shows_collection)
-    # update_premiere_to_decade(shows_collection)  # Convert premiere dates to decades
+    update_premiere_to_decade(shows_collection)  # Convert premiere dates to decades
     # remove_low_count_languages(shows_collection)  # Clean up rare languages
     # remove_noRuntime_movies(shows_collection)     # Remove entries without runtime information
     # remove_noRating_movies(shows_collection)      # Remove entries without ratings
     # remove_specific_runtimes(shows_collection)    # Remove entries with specific runtimes
     # print("Cleanup process completed.")
 
-main_cleanup()
+if __name__ == '__main__':
+    main()
+
