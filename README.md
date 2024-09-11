@@ -1,6 +1,12 @@
 # Vista
 
+
+https://github.com/user-attachments/assets/66e4c6f8-be42-469a-8093-3161849e34c0
+
+
 ## Overview
+
+
 Vista is a tv-show recommendation system that leverages game data from the TVmaze API and user interaction data to provide personalized tv-show suggestions. The system uses Flask for the backend and MongoDB for data storage, incorporating machine learning models to enhance recommendation accuracy.
 
 ## Installation
