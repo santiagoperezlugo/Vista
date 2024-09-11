@@ -5,7 +5,7 @@ from app.models import fetch_data, preprocess_data, build_similarity_matrix, get
 app = Flask(__name__)
 
 shows_df = fetch_data()
-processed_df, feature_columns = preprocess_data(shows_df)
+processed_df, feature_columns, image_urls = preprocess_data(shows_df)  # Capture the image_urls as well
 similarity_df = build_similarity_matrix(processed_df)
 
 @app.route('/')
@@ -20,9 +20,7 @@ def recommendations():
 
     show_index = find_show_index_by_name(show_name, shows_df)
     if show_index is not None:
-        recs = get_recommendations(show_index, similarity_df, shows_df)
-        # Include the image_url from your data, adjust the key name based on your actual data structure
-        recs['image_url'] = 'path/to/default/image' 
+        recs = get_recommendations(show_index, similarity_df, shows_df, image_urls)  # Pass the image_urls to the function
         return jsonify(recs.to_dict('records'))
     else:
         return jsonify({'message': f"No shows found with the name '{show_name}'."}), 404

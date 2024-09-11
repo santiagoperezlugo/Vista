@@ -18,7 +18,6 @@ def fetch_data():
     tv_shows = list(collection.find())
     return pd.DataFrame(tv_shows)
 
-
 def preprocess_data(shows_df):
     shows_df['genres'] = shows_df['genres'].apply(lambda x: x if isinstance(x, list) else [])
     mlb = MultiLabelBinarizer()
@@ -53,22 +52,21 @@ def preprocess_data(shows_df):
     # Combine genre data with other features
     full_features = pd.concat([pd.DataFrame(genres_encoded, columns=genre_columns), features_df], axis=1)
     
-    return full_features, list(genre_columns) + list(all_feature_names)
+    return full_features, list(genre_columns) + list(all_feature_names), shows_df['image_url']  # Also return image URLs for later use
+
+# Modify the get_recommendations function to include image URLs
+def get_recommendations(show_id, similarity_df, shows_df, image_urls, top_n=15):
+    sim_scores = similarity_df.loc[show_id]
+    top_indices = sim_scores.sort_values(ascending=False).index[1:top_n+1]
+    recommended_shows = shows_df.loc[shows_df.index.isin(top_indices)]
+    recommended_shows['recommendation_score'] = sim_scores[top_indices].values
+    recommended_shows['image_url'] = image_urls[top_indices]  # Add image URLs to the output
+    return recommended_shows[['name', 'url', 'rating', 'recommendation_score', 'image_url']]
 
 # Build cosine similarity matrix
 def build_similarity_matrix(processed_df):
     similarity_matrix = cosine_similarity(processed_df)
     return pd.DataFrame(similarity_matrix, index=processed_df.index, columns=processed_df.index)
-
-# Function to get recommendations based on cosine similarity and include recommendation scores, adjust top_n to get more recommendations
-def get_recommendations(show_id, similarity_df, shows_df, top_n=15):
-    sim_scores = similarity_df.loc[show_id]
-    top_indices = sim_scores.sort_values(ascending=False).index[1:top_n+1]
-    recommended_shows = shows_df.loc[shows_df.index.isin(top_indices)]
-    # Include the similarity scores in the output
-    recommended_shows['recommendation_score'] = sim_scores[top_indices].values
-    return recommended_shows[['name', 'url', 'rating', 'recommendation_score']]
-
 
 # Find a show by name and return its _id
 def find_show_index_by_name(show_name, shows_df):

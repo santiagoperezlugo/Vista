@@ -26,12 +26,15 @@ form {
 input[type="text"] {
     margin-right: 10px;
     padding: 8px;
-    width: calc(100% - 120px);
+    width: calc(100% - 120px); /* Adjust width as necessary */
     border: 1px solid #ccc;
     border-radius: 4px;
+    text-align: center; /* Centers the text inside the input */
 }
 
+
 button {
+    margin-top: 3%;
     padding: 10px 15px;
     background-color: #0056b3;
     color: white;
